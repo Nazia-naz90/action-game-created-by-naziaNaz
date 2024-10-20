@@ -1,15 +1,15 @@
 score = 0;
 cross = true;
 
-let audio1 = new Audio('./assets/images/dinasourse-audio.mp3');
-let audiogo1 = new Audio('./assets/images/dragon-audio.mp3');
+let audio = new Audio('./assets/images/dinasourse-audio.mp3');
+let audiogo = new Audio('./assets/images/dragon-audio.mp3');
 setTimeout(()=>{
    audio.play();
 },1000)
 
-let audioBg= new Audio('./assets/images/background-game-music.mp3');
+let audioBg = new Audio('./assets/images/background-game-music.mp3');
 setTimeout(()=>{
-  audioBg1.play();
+  audioBg.play();
 },2000)
 
 
@@ -109,107 +109,20 @@ function updateScore(score) {
 }
 
 /* Touch and play game functionality */
-document.addEventListener('touchstart', handleTouchStart, false);
-document.addEventListener('touchend', handleTouchEnd, false);
+
+let startX;
+
+document.addEventListener('touchstart', function(event) {
+    startX = event.touches[0].clientX;
+    handleTouchStart(event);
+}, false);
+
+document.addEventListener('touchend', function(event) {
+    const endX = event.changedTouches[0].clientX;
+    handleTouchEnd(startX, endX);
+}, false);
 
 function handleTouchStart(event) {
-  const touch = event.touches[0];
-  const dino = document.querySelector(".dino");
-
-  // Make the dino jump on touch start
-  dino.classList.add("animateDino");
-  setTimeout(() => {
-      dino.classList.remove("animateDino");
-  }, 700);
-}
-
-function handleTouchEnd(event) {
-  const touch = event.changedTouches[0];
-  const dino = document.querySelector(".dino");
-
-  // Logic to move dino left or right based on touch position can be added here
-
-  let startX;
-
-  document.addEventListener('touchstart', function(event) {
-      startX = event.touches[0].clientX;
-      handleTouchStart(event);
-  }, false);
-  
-  document.addEventListener('touchend', function(event) {
-      const endX = event.changedTouches[0].clientX;
-      handleTouchEnd(startX, endX);
-  }, false);
-  
-  function handleTouchStart(event) {
-      const dino = document.querySelector(".dino");
-  
-      dino.classList.add("animateDino");
-      setTimeout(() => {
-          dino.classList.remove("animateDino");
-      }, 700);
-  }
-  
-  function handleTouchEnd(startX, endX) {
-      const dino = document.querySelector(".dino");
-      const moveThreshold = 30; // Minimum distance threshold to detect a swipe
-  
-      if (endX - startX > moveThreshold) {
-          // Swipe right
-          let dinoX = parseInt(window.getComputedStyle(dino, null).getPropertyValue("left"));
-          dino.style.left = dinoX + 112 + "px";
-      } else if (startX - endX > moveThreshold) {
-          // Swipe left
-          let dinoX = parseInt(window.getComputedStyle(dino, null).getPropertyValue("left"));
-          dino.style.left = dinoX - 112 + "px";
-      }
-  }
-  
-
-  // This example assumes that swiping left or right should move the dino
-}
-
-score = 0;
-cross = true;
-let audio = new Audio('./assets/images/dinasourse-audio.mp3');
-let audiogo = new Audio('./assets/images/dragon-audio.mp3');
-
-setTimeout(() => {
-    audio.play();
-}, 1000);
-
-let audioBg1 = new Audio('./assets/images/background-game-music.mp3');
-setTimeout(() => {
-    audioBg.play();
-}, 2000);
-
-document.onkeydown = function (e) {
-    console.log("Key code is:", e.keyCode);
-    let dino = document.querySelector(".dino");
-
-    if (e.keyCode == 38) {
-        dino.classList.add("animateDino");
-        setTimeout(() => {
-            dino.classList.remove("animateDino");
-        }, 700);
-    }
-    if (e.keyCode == 39) {
-        let dino = document.querySelector(".dino");
-        let dinoX = parseInt(window.getComputedStyle(dino, null).getPropertyValue("left"));
-        dino.style.left = dinoX + 112 + "px";
-    }
-    if (e.keyCode == 37) {
-        let dino = document.querySelector(".dino");
-        let dinoX = parseInt(window.getComputedStyle(dino, null).getPropertyValue("left"));
-        dino.style.left = dinoX - 112 + "px";
-    }
-};
-
-document.addEventListener('touchstart', handleTouchStart, false);
-document.addEventListener('touchend', handleTouchEnd, false);
-
-function handleTouchStart(event) {
-    const touch = event.touches[0];
     const dino = document.querySelector(".dino");
 
     dino.classList.add("animateDino");
@@ -218,9 +131,19 @@ function handleTouchStart(event) {
     }, 700);
 }
 
-function handleTouchEnd(event) {
-    const touch = event.changedTouches[0];
-    // Additional logic for touch end can be implemented here
+function handleTouchEnd(startX, endX) {
+    const dino = document.querySelector(".dino");
+    const moveThreshold = 30; // Minimum distance threshold to detect a swipe
+
+    if (endX - startX > moveThreshold) {
+        // Swipe right
+        let dinoX = parseInt(window.getComputedStyle(dino, null).getPropertyValue("left"));
+        dino.style.left = dinoX + 112 + "px";
+    } else if (startX - endX > moveThreshold) {
+        // Swipe left
+        let dinoX = parseInt(window.getComputedStyle(dino, null).getPropertyValue("left"));
+        dino.style.left = dinoX - 112 + "px";
+    }
 }
 
 setInterval(() => {
@@ -264,4 +187,5 @@ setInterval(() => {
 
 function updateScore(score) {
     let scoreCont = document.querySelector("#scoreCont");
-    scoreCont.innerHTML = "Your score: " + score;}
+    scoreCont.innerHTML = "Your score: " + score;
+}
