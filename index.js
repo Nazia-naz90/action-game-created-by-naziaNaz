@@ -1,15 +1,15 @@
 score = 0;
 cross = true;
 
-let audio = new Audio('./assets/images/dinasourse-audio.mp3');
-let audiogo = new Audio('./assets/images/dragon-audio.mp3');
+let audio1 = new Audio('./assets/images/dinasourse-audio.mp3');
+let audiogo1 = new Audio('./assets/images/dragon-audio.mp3');
 setTimeout(()=>{
    audio.play();
 },1000)
 
-let audioBg = new Audio('./assets/images/background-game-music.mp3');
+let audioBg= new Audio('./assets/images/background-game-music.mp3');
 setTimeout(()=>{
-  audioBg.play();
+  audioBg1.play();
 },2000)
 
 
@@ -107,3 +107,123 @@ function updateScore(score) {
   let scoreCont = document.querySelector("#scoreCont");
   scoreCont.innerHTML = "Your score: " + score;
 }
+
+/* Touch and play game functionality */
+document.addEventListener('touchstart', handleTouchStart, false);
+document.addEventListener('touchend', handleTouchEnd, false);
+
+function handleTouchStart(event) {
+  const touch = event.touches[0];
+  const dino = document.querySelector(".dino");
+
+  // Make the dino jump on touch start
+  dino.classList.add("animateDino");
+  setTimeout(() => {
+      dino.classList.remove("animateDino");
+  }, 700);
+}
+
+function handleTouchEnd(event) {
+  const touch = event.changedTouches[0];
+  const dino = document.querySelector(".dino");
+
+  // Logic to move dino left or right based on touch position can be added here
+  // This example assumes that swiping left or right should move the dino
+}
+
+score = 0;
+cross = true;
+let audio = new Audio('./assets/images/dinasourse-audio.mp3');
+let audiogo = new Audio('./assets/images/dragon-audio.mp3');
+
+setTimeout(() => {
+    audio.play();
+}, 1000);
+
+let audioBg1 = new Audio('./assets/images/background-game-music.mp3');
+setTimeout(() => {
+    audioBg.play();
+}, 2000);
+
+document.onkeydown = function (e) {
+    console.log("Key code is:", e.keyCode);
+    let dino = document.querySelector(".dino");
+
+    if (e.keyCode == 38) {
+        dino.classList.add("animateDino");
+        setTimeout(() => {
+            dino.classList.remove("animateDino");
+        }, 700);
+    }
+    if (e.keyCode == 39) {
+        let dino = document.querySelector(".dino");
+        let dinoX = parseInt(window.getComputedStyle(dino, null).getPropertyValue("left"));
+        dino.style.left = dinoX + 112 + "px";
+    }
+    if (e.keyCode == 37) {
+        let dino = document.querySelector(".dino");
+        let dinoX = parseInt(window.getComputedStyle(dino, null).getPropertyValue("left"));
+        dino.style.left = dinoX - 112 + "px";
+    }
+};
+
+document.addEventListener('touchstart', handleTouchStart, false);
+document.addEventListener('touchend', handleTouchEnd, false);
+
+function handleTouchStart(event) {
+    const touch = event.touches[0];
+    const dino = document.querySelector(".dino");
+
+    dino.classList.add("animateDino");
+    setTimeout(() => {
+        dino.classList.remove("animateDino");
+    }, 700);
+}
+
+function handleTouchEnd(event) {
+    const touch = event.changedTouches[0];
+    // Additional logic for touch end can be implemented here
+}
+
+setInterval(() => {
+    let dino = document.querySelector(".dino");
+    let gameOver = document.querySelector(".gameOver");
+    let obstacle = document.querySelector(".obstacle");
+
+    let dx = parseInt(window.getComputedStyle(dino, null).getPropertyValue("left"));
+    let dy = parseInt(window.getComputedStyle(dino, null).getPropertyValue("top"));
+    let ox = parseInt(window.getComputedStyle(obstacle, null).getPropertyValue("left"));
+    let oy = parseInt(window.getComputedStyle(obstacle, null).getPropertyValue("top"));
+
+    let offsetX = Math.abs(dx - ox);
+    let offsetY = Math.abs(dy - oy);
+
+    if (offsetX < 73 && offsetY < 52) {
+        gameOver.innerHTML = "Game Over-Reload again";
+        gameOver.style.color = "red";
+        gameOver.style.backgroundColor = "transparent";
+        obstacle.classList.remove("obstacleAni");
+        audio.play();
+        setTimeout(() => {
+            audiogo.pause();
+            audio.pause();
+        }, 1000);
+    } else if (offsetX < 145 && cross) {
+        score += 1;
+        updateScore(score);
+        cross = false;
+        setTimeout(() => {
+            cross = true;
+        }, 1000);
+        setTimeout(() => {
+            let aniDur = parseFloat(window.getComputedStyle(obstacle, null).getPropertyValue("animation-duration"));
+            let newDur = aniDur - 0.1;
+            obstacle.style.animationDuration = newDur + "s";
+            console.log("New animation duration", newDur);
+        }, 500);
+    }
+}, 10);
+
+function updateScore(score) {
+    let scoreCont = document.querySelector("#scoreCont");
+    scoreCont.innerHTML = "Your score: " + score;}
