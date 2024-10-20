@@ -128,6 +128,44 @@ function handleTouchEnd(event) {
   const dino = document.querySelector(".dino");
 
   // Logic to move dino left or right based on touch position can be added here
+
+  let startX;
+
+  document.addEventListener('touchstart', function(event) {
+      startX = event.touches[0].clientX;
+      handleTouchStart(event);
+  }, false);
+  
+  document.addEventListener('touchend', function(event) {
+      const endX = event.changedTouches[0].clientX;
+      handleTouchEnd(startX, endX);
+  }, false);
+  
+  function handleTouchStart(event) {
+      const dino = document.querySelector(".dino");
+  
+      dino.classList.add("animateDino");
+      setTimeout(() => {
+          dino.classList.remove("animateDino");
+      }, 700);
+  }
+  
+  function handleTouchEnd(startX, endX) {
+      const dino = document.querySelector(".dino");
+      const moveThreshold = 30; // Minimum distance threshold to detect a swipe
+  
+      if (endX - startX > moveThreshold) {
+          // Swipe right
+          let dinoX = parseInt(window.getComputedStyle(dino, null).getPropertyValue("left"));
+          dino.style.left = dinoX + 112 + "px";
+      } else if (startX - endX > moveThreshold) {
+          // Swipe left
+          let dinoX = parseInt(window.getComputedStyle(dino, null).getPropertyValue("left"));
+          dino.style.left = dinoX - 112 + "px";
+      }
+  }
+  
+
   // This example assumes that swiping left or right should move the dino
 }
 
