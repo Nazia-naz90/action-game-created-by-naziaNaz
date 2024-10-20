@@ -1,0 +1,34 @@
+@media only screen and (max-width: 821px) {
+  .gameContainer {
+    width: 100%;
+    height: 100vh;
+  }
+  .gameScore {
+    flex-direction: column;
+  }
+  .gameOver {
+    width: 100px;
+    height: 60px;
+    font-size: 16px;
+    left: 20px;
+    top: 60px;
+    margin: auto;
+    padding: 5px;
+  }
+  #scoreCont {
+    width: 50px;
+    height: 45px;
+    font-size: 16px;
+    padding: 10px;
+    left: 0;
+    top: 60px;
+  }
+  .dino {
+    width: 50px;
+    height: 50px;
+  }
+  .obstacle{
+    width: 50px;
+    height: 50px;
+  }
+}
